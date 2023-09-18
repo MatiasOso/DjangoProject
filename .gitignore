@@ -1,0 +1,15 @@
+# Ignore pycache
+__pycache__/
+```
+# Ignore database
+db.sqlite3
+# Ignore static files
+staticfiles/
+# Ignore media files
+media/
+# Ignore .env file (Just in case)
+.env
+```
+# Ignore venv
+venv/
+```
