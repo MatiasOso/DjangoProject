@@ -19,7 +19,7 @@ def projects(request):
     return JsonResponse(projects,safe=False)
 
 def tasks(request,id):
-    task = Task.objects.get(id=id) #(pk)
+    tasks = Task.objects.get(id=id) #(pk)
     return HttpResponse('task: %s ' % tasks.title)
 
 def about(request):
