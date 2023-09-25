@@ -13,3 +13,6 @@ media/
 # Ignore venv
 venv/
 ```
+# Ignore .gitignore file
+entorno/
+```
