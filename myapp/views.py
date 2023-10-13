@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse,JsonResponse
 from .models import Project,Task
+from django.shortcuts import get_object_or_404
 
 def index(request):
     return HttpResponse("Index Page")
@@ -18,8 +19,10 @@ def projects(request):
     projects = list(Project.objects.values())
     return JsonResponse(projects,safe=False)
 
-def tasks(request,id):
-    tasks = Task.objects.get(id=id) #(pk)
+def tasks(request,title): #(request,id)
+    # tasks = Task.objects.get(id=id) #(pk)
+    # tasks = Task.objects.get(title=title) 
+    tasks = get_object_or_404(Task, title = title) # I NEED TO FIX THIS
     return HttpResponse('task: %s ' % tasks.title)
 
 def about(request):
