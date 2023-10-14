@@ -1,7 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.http import HttpResponse,JsonResponse
 from .models import Project,Task
 from django.shortcuts import get_object_or_404,render
+from .forms import CreateNewTask
 
 def index(request):
     # a futuro hare esto con una base de datos real (quizas db4free)
@@ -42,3 +43,14 @@ def tasks(request): #(request,id)
     return render(request,'tasks.html',{
         'tasks' : tasks 
     })
+    
+def create_task(request):
+    if request.method == 'GET':
+        # show interface
+        return render(request,'create_task.html',{
+            'form':CreateNewTask()
+        })
+    else:
+        Task.objects.create(title=request.POST['title'],
+                            description=request.POST['description'],project_id=2)
+        return redirect('/tasks/')
