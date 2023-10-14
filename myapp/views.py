@@ -1,10 +1,22 @@
 from django.shortcuts import render
 from django.http import HttpResponse,JsonResponse
 from .models import Project,Task
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404,render
 
 def index(request):
-    return HttpResponse("Index Page")
+    # a futuro hare esto con una base de datos real (quizas db4free)
+    title = 'Django Course!!'    
+    return render(request, 'index.html',{
+        # Diccionario
+        'title' : title
+    })
+
+
+def about(request):
+    username = '0somens'
+    return render(request,'about.html', {
+        'username' : username
+    })
 
 # Create your views here.
 def hello(request,username):
@@ -16,14 +28,17 @@ def hello(request,username):
 #     return HttpResponse("<h1>Hello %s</h1>" % result)
    
 def projects(request):
-    projects = list(Project.objects.values())
-    return JsonResponse(projects,safe=False)
+    # projects = list(Project.objects.values())
+    projects = Project.objects.all()
+    return render(request,'projects.html',{
+        'projects': projects
+    })
 
-def tasks(request,title): #(request,id)
+def tasks(request): #(request,id)
     # tasks = Task.objects.get(id=id) #(pk)
     # tasks = Task.objects.get(title=title) 
-    tasks = get_object_or_404(Task, title = title) # I NEED TO FIX THIS
-    return HttpResponse('task: %s ' % tasks.title)
-
-def about(request):
-    return HttpResponse("About")
+    # tasks = get_object_or_404(Task, title = title) # I NEED TO FIX THIS
+    tasks =  Task.objects.all()
+    return render(request,'tasks.html',{
+        'tasks' : tasks 
+    })
