@@ -6,14 +6,9 @@
     <title>Document</title>
 </head>
 <body>
-    <h1> Formulario Login</h1>
-    <form action="/home" method="POST">
-        {% csrf_token%}
-        {{form.as_p}}
-        <button>
-            Validar usuario
-        </button>
+    <h1> Home - Lista de clientes </h1>
+    
+    {{tabla_html|safe}}
 
-    </form>
 </body>
 </html>
