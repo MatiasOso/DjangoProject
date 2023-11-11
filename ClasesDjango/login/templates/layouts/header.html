@@ -14,10 +14,10 @@
         <header class="d-flex  row">
             <ul class="nav nav-pills  ">
                 <li class="nav-item col-2 "><img src="{% static 'logo.png' %}" width=250 height=121 alt="logo"></li>
-                <li class="nav-item col"><a href="#" class="nav-link">Inicio</a></li>
-                <li class="nav-item col"><a href="#" class="nav-link">Nosotros</a></li>
+                <li class="nav-item col"><a href="{% url 'inicio'%}" class="nav-link">Inicio</a></li>
+                <li class="nav-item col"><a href="{% url 'about'%}" class="nav-link">Nosotros</a></li>
                 <li class="nav-item col"><a href="#" class="nav-link">Nuestra Cocina</a></li>
-                <li class="nav-item col"><a href="#" class="nav-link">Sube tu receta ;)</a></li>
+                <li class="nav-item col"><a href="{% url 'AddRecipe'%}" class="nav-link">Sube tu receta ;)</a></li>
             </ul>
         </header>            
     <main class="container">

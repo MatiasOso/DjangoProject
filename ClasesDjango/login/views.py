@@ -19,9 +19,9 @@ def home(request):
             data = response.json()
             
             tabla_html = "<table>"
-            tabla_html += "<tr><th>id</th><th>usuario</th><th>clave</th></tr>"
+            tabla_html += "<tr><th>usuario</th><th>clave</th></tr>"
             for clientes in data['listaclientes']:
-                 tabla_html += f"<tr> <td>{clientes['ID']}</td> <td>{clientes['Nombre']} <td>{clientes['Password']} <td>{clientes['Email']} </td>  </tr>"
+                 tabla_html += f"<tr>  <td>{clientes['Nombre']} <td>{clientes['Password']} <td>{clientes['Email']} </td>  </tr>"
             tabla_html += "</table>"
             return render(request,'home.html',{'tabla_html': tabla_html})
         else:

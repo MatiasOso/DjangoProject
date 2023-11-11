@@ -23,7 +23,7 @@ urlpatterns = [
     path('',views.index),
     path('home',views.home),
     path('inicio',views.inicio, name = "inicio"),
-    path('AgregarReceta',views.AddRecipe, name="Agregar Receta"),
-    path('about',views.about)
+    path('AgregarReceta',views.AddRecipe, name="AddRecipe"),
+    path('about',views.about, name="about")
     
 ]
