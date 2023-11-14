@@ -20,10 +20,9 @@ from login import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',views.index),
-    path('home',views.home),
+    path('',views.home),
     path('inicio',views.inicio, name = "inicio"),
     path('AgregarReceta',views.AddRecipe, name="AddRecipe"),
     path('about',views.about, name="about")
-    
 ]
+# path('home',views.home),

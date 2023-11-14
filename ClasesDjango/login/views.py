@@ -1,8 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm
 from django.http import JsonResponse, HttpResponse
 from requests.exceptions import RequestException
+from .models import Receta,Usuario
+from .forms import CreateNewRecipe
+
 import requests
+
 # Create your views here.
 
 def index(request):
@@ -50,24 +54,25 @@ def inicio(request):
         return HttpResponse(str(e), status=500)
     
 def AddRecipe(request):
-        # a futuro hare esto con una base de datos real (quizas db4free)
-    title = 'Add Receta!!'    
-    return render(request, 'addReceta.html',{
-        # Diccionario
-        'title' : title
-    })
+    if request.method == 'GET':        
+        return render(request, 'addReceta.html', {
+            'form': CreateNewRecipe()
+        })
+    else:
+        # Obtén el usuario correspondiente al ID proporcionado en el formulario
+        autor_id = int(request.POST['autor'])
+        autor = Usuario.objects.get(pk=autor_id)
+
+        # Crea una nueva receta con el objeto de usuario como autor
+        Receta.objects.create(
+            categoria=request.POST['categoria'],
+            nombre=request.POST['nombre'],
+            ingredientes=request.POST['ingredientes'],
+            preparacion=request.POST['preparacion'],
+            calificacion=request.POST['calificacion'],
+            autor=autor
+        )
+        return redirect('home')
     
 def about(request):
     return render(request,'about.html')
-    
-    
-    
-        
-        
-        
-
-
-
-
-    
-    

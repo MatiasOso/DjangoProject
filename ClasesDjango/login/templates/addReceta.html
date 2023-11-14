@@ -9,6 +9,12 @@
 </head>
 <body>
     <h1> Formulario Receta</h1>
+    <!-- Para la receta se necesitará: Categoria,Nombre,Ingredientes,Preparacion, Calificacion, Autor -->
+    <form class="tabla-receta" method="POST">
+        {% csrf_token %}
+    {{form.as_p}}
+        <button>Save</button>
+    </form>
 </body>
 </html>
 {%endblock%}
