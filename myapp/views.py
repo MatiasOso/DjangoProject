@@ -58,12 +58,13 @@ def create_task(request):
     
 def create_project(request):
     if request.method == 'GET':
-        return render(request,'projects/create_project.html',{
-            'form':CreateNewProject
+        return render(request,'projects/create_project.html',{ #Esto sirve para mostrar la interfaz
+            'form':CreateNewProject #Esto sirve para mostrar el formulario
         })
     else:
-        Project.objects.create(name=request.POST['name'])
-        return redirect('projects')
+        Project.objects.create(name=request.POST['name']) #Esto sirve para crear un nuevo proyecto
+        return redirect('projects') # Esto sirve para redireccionar a la pagina de proyectos
+    
 
 def project_detail(request, id):
     project = get_object_or_404(Project,id=id)

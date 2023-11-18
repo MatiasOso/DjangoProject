@@ -1,8 +1,21 @@
 {% extends 'layouts/header.html' %} 
 {%block content%}
+<body class="inicio">
 <h1>Bienvenido</h1>
 <p>{% lorem 1 b random %}</p>
 
+{% comment %} Llamar tabla_html hecha en views {% endcomment %}
+
+<div class="container">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        {{ cards_html | safe }}
+    </div>
+</div>
+
+
+
 <p>Website created by 0somens</p>
+
+</body>
 
 {%endblock%}
