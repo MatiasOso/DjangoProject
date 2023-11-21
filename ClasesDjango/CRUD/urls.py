@@ -22,7 +22,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.inicio, name = "inicio") ,
     path('AgregarReceta',views.AddRecipe, name="AddRecipe"),
-    path('about',views.about, name="about")
+    path('about',views.about, name="about"),
+    path('register', views.register, name="register"),
+    path('login', views.login, name="login"),
 ]
 # path('home',views.home),
 # path('inicio',views.inicio, name = "inicio"),

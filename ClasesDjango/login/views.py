@@ -9,10 +9,15 @@ import requests
 
 # Create your views here.
 
-def index(request):
-    return render(request,'login.html',{
+def register(request):
+    return render(request,'register.html',{
         'form':UserCreationForm
     })    
+def login(request):
+    return render(request,'login.html')
+
+
+
 def home(request):
     urlAPI = "http://localhost:3000/usuarios" #Despues del / se debe agregar algo
     
@@ -35,6 +40,16 @@ def home(request):
 
 def inicio(request):
     urlApi = "http://localhost:3000/recetas"
+    urlImg = [
+        'https://drive.google.com/file/d/1RB0qxvAv6P9YOLChdo5QPfR_pNB5C0gT/view', #Lasaña
+        'https://drive.google.com/file/d/1tC4CGkjcXK2Jc9qllft9Y5xzXK7EJQea/view', #Pollo
+        'https://drive.google.com/file/d/1IDt-nal_hFgGC5yiYKyhI6MWgmNIJmpe/view', #arrozknleche
+        'https://drive.google.com/file/d/1qDO_y5Z7Z4DsX4Wj2ijW4EcBhnTEwm53/view', #Manzana
+        'https://drive.google.com/file/d/1EJWkD5ToPBodQaAW8rm3KjwAJvxwTFot/view', #Pollo al vino
+        'https://drive.google.com/file/d/1k8jgqWfawJwDmmD68UXHe1QyY5WZKmUO/view', #Sopa de tomate
+        'https://drive.google.com/file/d/1NpIW-5kRu0_PCaD_30fcvzPdAw9JGNNy/view', #Tortilla chips
+        'https://drive.google.com/file/d/15CWF9cBA6irI33EgrY2Pnnce6SWF4XJW/view' #Canape
+    ]
     
     try:
         response = requests.get(urlApi)
@@ -42,10 +57,11 @@ def inicio(request):
         if response.status_code == 200:
             data = response.json()
             cards_html = ""
-            for receta in data['listarecetas']:
+            for receta, imagen_receta in zip(data['listarecetas'], urlImg):                
                 card = f"""
                 <div class="col">
                     <div class="card shadow-sm">
+                        <img src="{imagen_receta}" class="card-img-top" alt="Imagen de la receta">
                         <div class="card-body">
                             <h5 class="card-title">{receta['Nombre']}</h5>
                             <p class="card-text">Calificación: {receta['Calificacion']}</p>
@@ -54,7 +70,6 @@ def inicio(request):
                                     <button type="button" class="btn btn-sm btn-outline-secondary">Ver más</button>
                                     <button type="button" class="btn btn-sm btn-outline-secondary">Compartir</button>
                                 </div>
-                                <small class="text-body-secondary">9 mins</small>
                             </div>
                         </div>
                     </div>
@@ -62,7 +77,7 @@ def inicio(request):
                 """
                 cards_html += card
             
-            return render(request, 'inicio.html', {'cards_html': cards_html})
+            return render(request, 'inicio.html', {'cards_html': cards_html,'imagenes': urlImg})
         else:
             return HttpResponse("Error en la solicitud a la API", status=500)
     except Exception as e:
