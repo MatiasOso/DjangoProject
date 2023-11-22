@@ -150,8 +150,8 @@ def ver_receta(request, id):
                     <div class="card shadow-sm">
                         <div class="card-body">
                             <h5 class="card-title">{receta['Nombre']}</h5>
-                            <p class="card-text">Calificación: {receta['Ingredientes']}</p>
-                            <p class="card-text">Calificación: {receta['Preparacion']}</p>
+                            <p class="card-text">Ingredientes: {receta['Ingredientes']}</p>
+                            <p class="card-text">Preparacion: {receta['Preparacion']}</p>
                             <p class="card-text">Calificación: {receta['Calificacion']}</p>
                             
                             <div class="d-flex justify-content-between align-items-center">

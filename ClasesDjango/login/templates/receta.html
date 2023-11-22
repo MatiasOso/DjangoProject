@@ -8,6 +8,13 @@
 </head>
 <body>
     {{cards_html|safe}}
+
+
+    <h1>Agrega un comentario</h1>
+    <form action="/receta/{{ Receta.id }}/comentario" method="POST">
+        {% csrf_token %}
+        <input type="text" name="comentario">
+        <input type="submit" value="Enviar">
 </body>
 </html>
 {%endblock%}
