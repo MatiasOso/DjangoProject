@@ -12,20 +12,26 @@
 
 
     <h1>Agrega un comentario</h1>
-    <form action="/receta/{{ Receta.id }}/comentario" method="POST">
+    <form action="/receta/comentario/{{ Receta.id }}/comentario" method="POST">
         {% csrf_token %}
     <div class="container row">
         <div class="col">
-            <input type="text" name="comentario">
+            <div class="mb-3">
+                <label for="exampleFormControlTextarea1" class="form-label">Ingrea un comentario</label>
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+              </div>
             <input type="submit" value="Enviar">
         </div>
+
+
+
+
 
         <div class="col d-flex justify-content-end">
             <h1>¡Comparte esta receta!</h1>
             {% post_to_facebook object_or_url "Post to Facebook!" %}
             {% post_to_twitter "Prueba esta receta: " object_or_url "Post to Twitter" %}
-
-            
+            {% post_to_reddit "Prueba esta recta:" object_or_url %}
         </div>
     </div>
 </body>

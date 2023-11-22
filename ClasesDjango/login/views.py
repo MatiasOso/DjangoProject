@@ -92,19 +92,17 @@ def AddRecipe(request):
         ingredientes = request.POST['ingredientes']
         preparacion = request.POST['preparacion']
         calificacion = request.POST['calificacion']
-        autor_id = request.POST['autor']
+        # autor_id = request.POST['autor']
 
         # Obtiene el objeto Usuario correspondiente al ID proporcionado en el formulario
-        autor = Usuario.objects.get(pk=autor_id)
+        # autor = Usuario.objects.get(pk=autor_id) # Que no se me olvide que todavia no necesito que sea un usuario existente el que agregue la receta
 
-        # Crea un diccionario con los datos de la receta
         receta_data = {
             'categoria': categoria,
             'nombre': nombre,
             'ingredientes': ingredientes,
             'preparacion': preparacion,
             'calificacion': calificacion,
-            'autor': autor_id
         }
 
         # URL de tu endpoint para agregar recetas en la API en Node.js
@@ -113,7 +111,7 @@ def AddRecipe(request):
         try:
             # Realiza una solicitud POST a tu API en Node.js
             response = requests.post(url_api, json=receta_data)
-
+            
             if response.status_code == 200:
                 # Redirige a la página de inicio si la receta se agregó correctamente
                 return redirect('home')
@@ -134,13 +132,16 @@ def about(request):
 
 def ver_receta(request, id):
     urlApi = f"http://localhost:3000/recetas/{id}"
+    urlComents = f"http://localhost:3000/recetas/comentarios/{id}"
 
     try:
         response = requests.get(urlApi)
         print(response.status_code)
+        responseComents = requests.get(urlComents)
         
-        if response.status_code == 200:
+        if response.status_code == 200 and responseComents.status_code == 200:
             receta = response.json()
+            coments = responseComents.json()
             cards_html = ""
             for receta in receta:       
                     
@@ -160,11 +161,28 @@ def ver_receta(request, id):
                 </div>
                 """
                 cards_html += card
+                
+            for coment in coments:
+                card = f"""
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <p class="card-text">Usuario: {coment['Usuario']}</p>
+                            <p class="card-text">{coment['Comentario']}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                """
+                cards_html += card
             
             return render(request, 'receta.html', {
                 'receta': receta, 
-                'cards_html': cards_html})
+                'cards_html': cards_html,
+                'coments': coments})
         else:
             return HttpResponse("Error en la solicitud a la API", status=500)
     except Exception as e:
         return HttpResponse(str(e), status=500)
+
