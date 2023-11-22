@@ -57,7 +57,8 @@ def inicio(request):
         if response.status_code == 200:
             data = response.json()
             cards_html = ""
-            for receta, imagen_receta in zip(data['listarecetas'], urlImg):                
+            for receta, imagen_receta in zip(data['listarecetas'], urlImg):       
+                         
                 card = f"""
                 <div class="col">
                     <div class="card shadow-sm">
@@ -128,3 +129,43 @@ def AddRecipe(request):
     
 def about(request):
     return render(request,'about.html')
+
+# Ver recetas
+
+def ver_receta(request, id):
+    urlApi = f"http://localhost:3000/recetas/{id}"
+
+    try:
+        response = requests.get(urlApi)
+        print(response.status_code)
+        print(response.content)  # Opcionalmente, imprime el contenido de la respuesta
+        
+        if response.status_code == 200:
+            receta = response.json()
+            cards_html = ""
+            for receta in receta:       
+                    
+                card = f"""
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">{receta['Nombre']}</h5>
+                            <p class="card-text">Calificación: {receta['Ingredientes']}</p>
+                            <p class="card-text">Calificación: {receta['Preparacion']}</p>
+                            <p class="card-text">Calificación: {receta['Calificacion']}</p>
+                            
+                            <div class="d-flex justify-content-between align-items-center">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                """
+                cards_html += card
+            
+            return render(request, 'receta.html', {
+                'receta': receta, 
+                'cards_html': cards_html})
+        else:
+            return HttpResponse("Error en la solicitud a la API", status=500)
+    except Exception as e:
+        return HttpResponse(str(e), status=500)

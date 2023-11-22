@@ -18,7 +18,7 @@ class Receta(models.Model):
     Nombre = models.CharField(max_length=255)
     Ingredientes = models.TextField()
     Preparacion = models.TextField()
-    Calificacion = models.IntegerField(max_length=5)
+    Calificacion = models.IntegerField()
     Autor = models.IntegerField()
     
     def __str__(self):

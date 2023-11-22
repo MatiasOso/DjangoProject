@@ -1,0 +1,13 @@
+{% extends 'layouts/header.html' %} 
+{%block content%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ Receta.Nombre }}</title>
+</head>
+<body>
+    {{cards_html|safe}}
+</body>
+</html>
+{%endblock%}
