@@ -1,5 +1,6 @@
 {% extends 'layouts/header.html' %} 
 {%block content%}
+{% load social_share %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,8 +14,20 @@
     <h1>Agrega un comentario</h1>
     <form action="/receta/{{ Receta.id }}/comentario" method="POST">
         {% csrf_token %}
-        <input type="text" name="comentario">
-        <input type="submit" value="Enviar">
+    <div class="container row">
+        <div class="col">
+            <input type="text" name="comentario">
+            <input type="submit" value="Enviar">
+        </div>
+
+        <div class="col d-flex justify-content-end">
+            <h1>¡Comparte esta receta!</h1>
+            {% post_to_facebook object_or_url "Post to Facebook!" %}
+            {% post_to_twitter "Prueba esta receta: " object_or_url "Post to Twitter" %}
+
+            
+        </div>
+    </div>
 </body>
 </html>
 {%endblock%}

@@ -68,7 +68,7 @@ def inicio(request):
                             <p class="card-text">Calificación: {receta['Calificacion']}</p>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">Ver más</button>
+                                    <a href="/receta/{receta['ID']}" class="btn btn-sm btn-outline-secondary">Ver</a>
                                     <button type="button" class="btn btn-sm btn-outline-secondary">Compartir</button>
                                 </div>
                             </div>
@@ -138,7 +138,6 @@ def ver_receta(request, id):
     try:
         response = requests.get(urlApi)
         print(response.status_code)
-        print(response.content)  # Opcionalmente, imprime el contenido de la respuesta
         
         if response.status_code == 200:
             receta = response.json()

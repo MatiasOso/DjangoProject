@@ -11,8 +11,8 @@ en cmd
 ./>python manage.py makemigrations
 ./>python manage.py shell
 >>> from myapp.models import Project,Task
+./>pip install django-social-share
 ./>
 ./>
 ./>
-./>
-./>
+./>pip install --upgrade virtualenv
