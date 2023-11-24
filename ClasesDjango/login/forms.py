@@ -6,6 +6,8 @@ class CreateNewRecipe(forms.Form):
     nombre = forms.CharField(label='Nombre', max_length=255, widget=forms.TextInput(attrs={'class': 'input'}))
     ingredientes = forms.CharField(label='Ingredientes', widget=forms.Textarea(attrs={'class': 'input addIngredientes', 'rows': 5}))  # Cambio a Textarea
     preparacion = forms.CharField(label='Preparacion', widget=forms.Textarea(attrs={'class': 'input addPreparacion', 'rows': 10}))  # Cambio a Textarea
+    calificacion = forms.IntegerField(label='Calificacion', initial=0, widget=forms.TextInput(attrs={'class': 'input', 'readonly': True}))  # Establece 'initial' a 0 y 'readonly' a True
+    autor = forms.IntegerField(label='Autor', initial=1, widget=forms.TextInput(attrs={'class': 'input', 'readonly': True})) 
     
     
 

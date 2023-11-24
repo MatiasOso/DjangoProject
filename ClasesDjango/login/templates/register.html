@@ -7,11 +7,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-<body class=" container-fluid ">
+<body class="container-fluid">
     <h1> Formulario Login</h1>
-    <form action="/home" method="POST">
+    <form method="POST">
         {% csrf_token%}
         {{form.as_p}}
+        {% comment %} Email {% endcomment %}
+        <label for="email">Email:</label>
+        <input type="email" name="email" id="email" required>
+        {% comment %} Contraseña {% endcomment %}
         <button>
             Registrarse
         </button>

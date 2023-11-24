@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 from django.http import JsonResponse, HttpResponse
 from requests.exceptions import RequestException
 from .models import Receta,Usuario
@@ -7,14 +8,6 @@ from .forms import CreateNewRecipe
 
 import requests
 
-# Create your views here.
-
-def register(request):
-    return render(request,'register.html',{
-        'form':UserCreationForm
-    })    
-def login(request):
-    return render(request,'login.html')
 
 
 
@@ -39,30 +32,24 @@ def home(request):
         return HttpResponse(str(e), status=500)
 
 def inicio(request):
-    urlApi = "http://localhost:3000/recetas"
-    urlImg = [
-        'https://drive.google.com/file/d/1RB0qxvAv6P9YOLChdo5QPfR_pNB5C0gT/view', #Lasaña
-        'https://drive.google.com/file/d/1tC4CGkjcXK2Jc9qllft9Y5xzXK7EJQea/view', #Pollo
-        'https://drive.google.com/file/d/1IDt-nal_hFgGC5yiYKyhI6MWgmNIJmpe/view', #arrozknleche
-        'https://drive.google.com/file/d/1qDO_y5Z7Z4DsX4Wj2ijW4EcBhnTEwm53/view', #Manzana
-        'https://drive.google.com/file/d/1EJWkD5ToPBodQaAW8rm3KjwAJvxwTFot/view', #Pollo al vino
-        'https://drive.google.com/file/d/1k8jgqWfawJwDmmD68UXHe1QyY5WZKmUO/view', #Sopa de tomate
-        'https://drive.google.com/file/d/1NpIW-5kRu0_PCaD_30fcvzPdAw9JGNNy/view', #Tortilla chips
-        'https://drive.google.com/file/d/15CWF9cBA6irI33EgrY2Pnnce6SWF4XJW/view' #Canape
-    ]
-    
+    urlApiRecetas = "http://localhost:3000/recetas"
+    urlApiImagenes = "http://localhost:3000/imagenes"  # Nueva URL para obtener las imágenes
+
     try:
-        response = requests.get(urlApi)
-    
-        if response.status_code == 200:
-            data = response.json()
+        responseRecetas = requests.get(urlApiRecetas)
+        responseImagenes = requests.get(urlApiImagenes)  # Obtener las URLs de las imágenes desde la API
+
+        if responseRecetas.status_code == 200 and responseImagenes.status_code == 200:
+            dataRecetas = responseRecetas.json()
+            dataImagenes = responseImagenes.json()
+
             cards_html = ""
-            for receta, imagen_receta in zip(data['listarecetas'], urlImg):       
+            for receta, imagen_receta in zip(dataRecetas['listarecetas'], dataImagenes['listarecetas']):       
                          
                 card = f"""
                 <div class="col">
                     <div class="card shadow-sm">
-                        <img src="{imagen_receta}" class="card-img-top" alt="Imagen de la receta">
+                        <img src="{imagen_receta['IMG']}" class="card-img-top" alt="Imagen de la receta">
                         <div class="card-body">
                             <h5 class="card-title">{receta['Nombre']}</h5>
                             <p class="card-text">Calificación: {receta['Calificacion']}</p>
@@ -78,11 +65,12 @@ def inicio(request):
                 """
                 cards_html += card
             
-            return render(request, 'inicio.html', {'cards_html': cards_html,'imagenes': urlImg})
+            return render(request, 'inicio.html', {'cards_html': cards_html})
         else:
             return HttpResponse("Error en la solicitud a la API", status=500)
     except Exception as e:
         return HttpResponse(str(e), status=500)
+
 
 def AddRecipe(request):
     if request.method == 'POST':
@@ -114,7 +102,7 @@ def AddRecipe(request):
             
             if response.status_code == 200:
                 # Redirige a la página de inicio si la receta se agregó correctamente
-                return redirect('home')
+                return redirect('inicio')
             else:
                 # Maneja el caso si hay un error al agregar la receta
                 return HttpResponse("Error al agregar la receta a la API", status=500)
@@ -136,12 +124,17 @@ def ver_receta(request, id):
 
     try:
         response = requests.get(urlApi)
-        print(response.status_code)
         responseComents = requests.get(urlComents)
         
-        if response.status_code == 200 and responseComents.status_code == 200:
+        if response.status_code == 200:
             receta = response.json()
-            coments = responseComents.json()
+            
+            # Verificar si hay comentarios o no
+            if responseComents.status_code == 200:
+                coments = responseComents.json()
+            else:
+                coments = []  # Si no hay comentarios, asignar una lista vacía
+            
             cards_html = ""
             for receta in receta:       
                     
@@ -161,6 +154,7 @@ def ver_receta(request, id):
                 </div>
                 """
                 cards_html += card
+        
                 
             for coment in coments:
                 card = f"""
@@ -186,3 +180,53 @@ def ver_receta(request, id):
     except Exception as e:
         return HttpResponse(str(e), status=500)
 
+
+# LOGIN N REGISTER LOGIN N REGISTER LOGIN N REGISTER LOGIN N REGISTER
+# LOGIN N REGISTER LOGIN N REGISTER LOGIN N REGISTER LOGIN N REGISTER
+# LOGIN N REGISTER LOGIN N REGISTER LOGIN N REGISTER LOGIN N REGISTER
+# LOGIN N REGISTER LOGIN N REGISTER LOGIN N REGISTER LOGIN N REGISTER
+# LOGIN N REGISTER LOGIN N REGISTER LOGIN N REGISTER LOGIN N REGISTER
+
+
+def register(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            # Guarda los datos del formulario validado
+            nombre = form.cleaned_data['username']
+            password = form.cleaned_data['password1']
+            email = form.cleaned_data['email']
+
+            # Crea el diccionario con los datos del usuario
+            usuario_data = {
+                'nombre': nombre,
+                'password': password,
+                'email': email,
+            }
+            
+            # URL de tu endpoint para agregar usuarios en la API en Node.js
+            url_api = 'http://localhost:3000/usuarios/add'
+            
+            try:
+                # Realiza una solicitud POST a tu API en Node.js
+                response = requests.post(url_api, json=usuario_data)
+                
+                if response.status_code == 200:
+                    # Redirige a la página de inicio si el usuario se registró correctamente
+                    return redirect('inicio')
+                else:
+                    # Maneja el caso si hay un error al agregar el usuario
+                    return HttpResponse("Error al agregar el usuario a la API", status=500)
+            except Exception as e:
+                return HttpResponse(str(e), status=500)
+    else:
+        form = UserCreationForm()
+    
+    return render(request, 'register.html', {'form': form})
+      
+    
+    
+def login(request):
+    return render(request,'login.html',{
+        
+    })  
