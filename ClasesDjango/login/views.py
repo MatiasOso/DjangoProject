@@ -55,6 +55,7 @@ def inicio(request):
                             <p class="card-text">Calificación: {receta['Calificacion']}</p>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group">
+                                <p>Holaaaa</p>
                                     <a href="/receta/{receta['ID']}" class="btn btn-sm btn-outline-secondary">Ver</a>
                                     <button type="button" class="btn btn-sm btn-outline-secondary">Compartir</button>
                                 </div>
