@@ -12,6 +12,10 @@
 
 
     <h1>Agrega un comentario</h1>
+    {{comentar_html|safe}}
+    
+    {% comment %} ELEGIR ENTRE EK DE ARRIBA Y EL DE ABAJO {% endcomment %}
+
     <form action="/receta/comentario/{{ Receta.id }}/comentario" method="POST">
         {% csrf_token %}
     <div class="container row">
@@ -22,9 +26,6 @@
               </div>
             <input type="submit" value="Enviar">
         </div>
-
-
-
 
 
         <div class="col d-flex justify-content-end">
