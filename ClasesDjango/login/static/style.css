@@ -52,3 +52,78 @@ header .nav-link {
 }
 
 /* Login */
+.cuerpo{
+    background-color: rgb(235, 234, 230);
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 70vh;
+}
+/* .cuerpoabout{
+    background-color: rgb(235, 234, 230);
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+} */
+
+
+
+
+.image-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.Nosotros {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+}
+.Nosotros img {
+    width: auto;
+    height: 300px;
+}
+
+.Titulo {
+    color: rgb(122, 114, 86);
+    text-align: center;
+}
+
+.Titulo1 {
+    color: rgb(122, 114, 86);
+}
+
+.contenedor-parrafo {
+    background-color: rgb(235, 234, 230);
+    width:700px; 
+    height: 400px; 
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.Parrafo {
+
+    text-align: left;
+}
+
+.image-container a {
+    margin: 0px;
+}
+
+.image-container img {
+    width: auto;
+    height: 400px;
+}
+
+.image-container img {
+    transition: transform 0.2s; 
+}
+
+.image-container img:hover {
+    transform: scale(1.05); 
+}

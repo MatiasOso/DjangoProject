@@ -1,5 +1,6 @@
 {% extends 'layouts/header.html' %} 
 {%block content%}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,9 +8,74 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-<body>
-    <h1>Sobre nosotros</h1>
-     
+<body class="cuerpoabout">
+
+    <div class="Nosotros">
+    <img src="{% static 'imagenes/Nosotros.png' %}">
+    </div>
+
+    <h1 class="Titulo">Sobre Nosotros</h1>
+
+    <br/>
+    <br/>
+
+    <div class="contenedor-parrafo">
+    <p class="Parrafo"><!DOCTYPE html>
+        <html lang="es">
+        
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Sobre Nosotros - Recetas Don Oso</title>
+            <style>
+                body {
+                    font-family: 'Arial', sans-serif;
+                    line-height: 1.6;
+                    margin: 20px;
+                }
+        
+                h1, h2, p {
+                    margin-bottom: 15px;
+                }
+        
+                h2 {
+                    color: #007BFF;
+                }
+        
+                strong {
+                    font-weight: bold;
+                }
+        
+                em {
+                    font-style: italic;
+                }
+            </style>
+        </head>
+        
+        <body>
+            <h1 class ="Titulo">Sobre Nosotros - Recetas Don Oso</h1>
+        
+            <p>Bienvenido a Recetas Don Oso, un proyecto gestado por un grupo de estudiantes universitarios apasionados por la cocina y motivados por un proyecto académico.</p>
+        
+            <h2 class="Titulo1">Nuestra Inspiración</h2>
+        
+            <p>La idea de Recetas Don Oso nació durante un trabajo universitario en el que decidimos llevar nuestra pasión por la cocina a nuevas alturas. El nombre de la página es un homenaje a nuestro compañero Matías "Osores" y refleja la calidez y creatividad que queremos transmitir.</p>
+        
+            <h2 class="Titulo1">Trabajo en Equipo y Comunicación</h2>
+        
+            <p>Lo que hace única a Recetas Don Oso no es solo la variedad de recetas, sino también nuestro sólido espíritu de equipo. Más allá de ser alumnos de la misma asignatura, nuestra afinidad se refleja en una comunicación abierta y una excepcional capacidad de trabajo en equipo.</p>
+        
+            <p>Aprender de diversas disciplinas y enfrentar nuevos retos nos ha permitido crecer personal y profesionalmente.</p>
+        
+            <h2 class="Titulo1">Nuestro Compromiso</h2>
+        
+            <p>En Recetas Don Oso, no solo compartimos recetas, sino también historias, tradiciones y momentos especiales alrededor de la cocina. Nuestra misión es inspirarte a descubrir el placer de cocinar y compartir momentos inolvidables con tus seres queridos.</p>
+        
+            <p>Únete a nosotros en este viaje culinario, donde la pasión por la comida se combina con la camaradería y el aprendizaje constante.</p>
+        
+
+    </div>
+
 
 </body>
 </html>

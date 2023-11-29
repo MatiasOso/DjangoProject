@@ -1,10 +1,16 @@
 {% extends 'layouts/header.html' %} 
 {%block content%}
-<body class="inicio">
-<h1>Bienvenido</h1>
-<p>{% lorem 1 b random %}</p>
+{% load static %}
 
-{% comment %} Llamar tabla_html hecha en views {% endcomment %}
+<body class="inicio">
+
+<div class="cuerpo">
+<div class="image-container">
+    <a href="pagina1.html"><img src="{% static 'imagenes/Lasaña-ini.png' %}" alt="Imagen 1"></a>
+    <a href="pagina2.html"><img src="{% static 'imagenes/Pollo-ini.png' %}" alt="Imagen 2"></a>
+    <a href="pagina3.html"><img src="{% static 'imagenes/Galletas-ini.png' %}" alt="Imagen 3"></a>
+</div>
+</div>
 
 <div class="container">
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">

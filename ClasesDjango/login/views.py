@@ -51,14 +51,10 @@ def inicio(request):
                     <div class="card shadow-sm">
                         <img src="{imagen_receta['IMG']}" class="card-img-top" alt="Imagen de la receta">
                         <div class="card-body">
-                            <h5 class="card-title">{receta['Nombre']}</h5>
+                            <h5 class="card-title text-center">{receta['Nombre']}</h5>
                             <p class="card-text">Calificación: {receta['Calificacion']}</p>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group">
-                                <p>Holaaaa</p>
-                                <p>Holaaaa</p>
-                                <p>Holaaaa</p>
-                                 <p>Holaaaa</p>
                                     <a href="/receta/{receta['ID']}" class="btn btn-sm btn-outline-secondary">Ver</a>
                                     <button type="button" class="btn btn-sm btn-outline-secondary">Compartir</button>
                                 </div>
@@ -67,6 +63,7 @@ def inicio(request):
                     </div>
                 </div>
                 """
+
                 cards_html += card
             
             return render(request, 'inicio.html', {'cards_html': cards_html})
