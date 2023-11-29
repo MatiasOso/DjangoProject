@@ -5,6 +5,8 @@ from django.http import JsonResponse, HttpResponse
 from requests.exceptions import RequestException
 from .models import Receta,Usuario
 from .forms import CreateNewRecipe
+# from .google_auth_API import upload_file, get_recipe_image_url
+
 
 import requests
 
@@ -44,7 +46,7 @@ def inicio(request):
             dataImagenes = responseImagenes.json()
 
             cards_html = ""
-            for receta, imagen_receta in zip(dataRecetas['listarecetas'], dataImagenes['listarecetas']):       
+            for receta, imagen_receta in zip(dataRecetas['listarecetas'], dataImagenes['listaimg']):       
                          
                 card = f"""
                 <div class="col">
@@ -96,7 +98,8 @@ def AddRecipe(request):
 
         # URL de tu endpoint para agregar recetas en la API en Node.js
         url_api = 'http://localhost:3000/recetas/add'
-
+        url_api_imagenes = 'http://localhost:3000/imagenes/add'
+        
         try:
             # Realiza una solicitud POST a tu API en Node.js
             response = requests.post(url_api, json=receta_data)
@@ -118,10 +121,46 @@ def about(request):
     return render(request,'about.html')
 
 # Ver recetas
+# Ver recetas
+# Ver recetas
+# Ver recetas
+# Ver recetas
+# Ver recetas
+# Ver recetas
+
+def comentar_receta(request):
+    if request.method == 'POST':
+        usuario = request.POST['Usuario']
+        receta_id = request.POST['Receta_ID']
+        comentario = request.POST['Comentario']
+        
+        comentario_data = {
+            'usuario': usuario,
+            'receta_id': receta_id,
+            'comentario': comentario,
+        }
+        url_api = 'http://localhost:3000/recetas/comentarios/add'
+        
+        try:
+            response = requests.post(url_api, json=comentario_data)
+            
+            if response.status_code == 200:
+                return redirect('localhost:8000/receta/{receta_id}')
+            else:
+                return HttpResponse("Error al agregar el comentario a la API", status=500)
+        except Exception as e:
+            return HttpResponse(str(e), status=500)
+    else:
+        return render(request, 'receta/{id}', {
+            'form': Comentario() 
+        })
+        
+        
 
 def ver_receta(request, id):
     urlApi = f"http://localhost:3000/recetas/{id}"
     urlComents = f"http://localhost:3000/recetas/comentarios/{id}"
+    urlComentarios = f"http://localhost:3000/recetas/comentarios/add"
 
     try:
         response = requests.get(urlApi)
@@ -171,11 +210,15 @@ def ver_receta(request, id):
                 </div>
                 """
                 cards_html += card
+                
+            # Comentarios
+
             
             return render(request, 'receta.html', {
                 'receta': receta, 
                 'cards_html': cards_html,
-                'coments': coments})
+                'coments': coments,
+                'comentar_html': comentar_html,})
         else:
             return HttpResponse("Error en la solicitud a la API", status=500)
     except Exception as e:

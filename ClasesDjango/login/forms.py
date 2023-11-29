@@ -17,3 +17,4 @@ class Comentario(forms.Form):
     Receta_ID = forms.IntegerField(label='Receta_ID', widget=forms.TextInput(attrs={'class': 'input'}))
     Comentario = forms.CharField(label='Comentario', max_length=255, widget=forms.TextInput(attrs={'class': 'input'}))
     
+    

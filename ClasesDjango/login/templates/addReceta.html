@@ -13,6 +13,8 @@
     <form class="tabla-receta" method="POST">
         {% csrf_token %}
     {{form.as_p}}
+    {% comment %} img {% endcomment %}
+    <input type="file" name="img" id="img">
         <button>Save</button>
     </form>
 </body>
