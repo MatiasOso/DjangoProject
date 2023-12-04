@@ -23,4 +23,8 @@ class Receta(models.Model):
     
     def __str__(self):
         return self.Nombre
+
+# class Comentario(models.Modles):
+#         Autor = models.IntegerField()
+#         Comentario =  models.CharField(max_length=255)
     

@@ -232,7 +232,7 @@ def ver_receta(request, id):
 # LOGIN N REGISTER LOGIN N REGISTER LOGIN N REGISTER LOGIN N REGISTER
 
 
-def register(request):
+def register(request): #Yo del futuro: Quizas no necesites usar UserCreationForm ya que puede que al hacer migraciones jodas los modelos y con ello las demas paginas asi que prueba con solo usar lo creado por ti (register con el forms hecho por ti)
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
@@ -265,12 +265,35 @@ def register(request):
                 return HttpResponse(str(e), status=500)
     else:
         form = UserCreationForm()
-    
+    #
     return render(request, 'register.html', {'form': form})
       
     
     
 def login(request):
-    return render(request,'login.html',{
-        
+    if request.method == 'POST':
+        user = request.POST['username']
+        password = request.POST['password']
+
+        login_user = {
+        "Nombre": user,
+        "Password": password,
+        }
+        url_auth = 'http://localhost:3000/usuarios'
+        try:
+            response = requests.get(url_auth)
+
+            if response.status_code == 200:
+                data = response.json()
+                for users in data['listaclientes']:
+                    if {users['Nombre']} == user and {users['Password']}:
+                        return redirect('inicio')
+                    else:
+                        return HttpResponse("Error al encontrar al usuario", status=500)        
+            else:
+                return HttpResponse("Error al encontrar al usuario", status=500)
+        except Exception as e:
+            return HttpResponse(str(e), status=500)
+    else:
+        return render(request,'login.html',{
     })  

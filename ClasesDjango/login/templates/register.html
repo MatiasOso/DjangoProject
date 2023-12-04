@@ -9,13 +9,12 @@
 </head>
 <body class="container-fluid">
     <h1> Formulario Login</h1>
-    <form method="POST">
+    <form method="POST" action="/register">
         {% csrf_token%}
         {{form.as_p}}
         {% comment %} Email {% endcomment %}
         <label for="email">Email:</label>
         <input type="email" name="email" id="email" required>
-        {% comment %} Contraseña {% endcomment %}
         <button>
             Registrarse
         </button>
