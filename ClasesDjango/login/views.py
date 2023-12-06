@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.http import JsonResponse, HttpResponse
@@ -6,7 +7,6 @@ from requests.exceptions import RequestException
 from .models import Receta,Usuario
 from .forms import CreateNewRecipe
 # from .google_auth_API import upload_file, get_recipe_image_url
-
 
 import requests
 
@@ -162,6 +162,30 @@ def ver_receta(request, id):
     urlComents = f"http://localhost:3000/recetas/comentarios/{id}"
     urlComentarios = f"http://localhost:3000/recetas/comentarios/add"
 
+    if request.method == 'POST':
+        comentario = request.POST.get('Comentario')
+        usuario = request.POST.get('Usuario')
+
+        if usuario is None or usuario == "":
+            usuario = 1
+
+        datos_comentario = {
+            'Usuario': usuario,
+            'Receta_ID': id,
+            'comentario': comentario,
+        }
+
+        try:
+            responseComentar = requests.post(urlComentarios, json=datos_comentario)
+            
+            if responseComentar.status_code != 200:
+                return HttpResponse("Error al agregar el comentario a la API", status=500)
+        except Exception as e:
+            return HttpResponse(str(e), status=500)
+
+        # Si se agregó correctamente el comentario, podrías redirigir a alguna vista
+        return redirect('inicio')  # Reemplaza 'nombre_de_la_vista' por tu vista deseada
+
     try:
         response = requests.get(urlApi)
         responseComents = requests.get(urlComents)
@@ -169,24 +193,21 @@ def ver_receta(request, id):
         if response.status_code == 200:
             receta = response.json()
             
-            # Verificar si hay comentarios o no
             if responseComents.status_code == 200:
                 coments = responseComents.json()
             else:
-                coments = []  # Si no hay comentarios, asignar una lista vacía
-            
+                coments = []
+
             cards_html = ""
-            for receta in receta:       
-                    
+            for rec in receta:  # Cambia el nombre de la variable para no reemplazar la lista `receta`
                 card = f"""
                 <div class="col">
                     <div class="card shadow-sm">
                         <div class="card-body">
-                            <h5 class="card-title">{receta['Nombre']}</h5>
-                            <p class="card-text">Ingredientes: {receta['Ingredientes']}</p>
-                            <p class="card-text">Preparacion: {receta['Preparacion']}</p>
-                            <p class="card-text">Calificación: {receta['Calificacion']}</p>
-                            
+                            <h5 class="card-title">{rec['Nombre']}</h5>
+                            <p class="card-text">Ingredientes: {rec['Ingredientes']}</p>
+                            <p class="card-text">Preparacion: {rec['Preparacion']}</p>
+                            <p class="card-text">Calificación: {rec['Calificacion']}</p>
                             <div class="d-flex justify-content-between align-items-center">
                             </div>
                         </div>
@@ -194,8 +215,7 @@ def ver_receta(request, id):
                 </div>
                 """
                 cards_html += card
-        
-                
+
             for coment in coments:
                 card = f"""
                 <div class="col">
@@ -210,15 +230,13 @@ def ver_receta(request, id):
                 </div>
                 """
                 cards_html += card
-                
-            # Comentarios
 
-            
             return render(request, 'receta.html', {
                 'receta': receta, 
                 'cards_html': cards_html,
                 'coments': coments,
-                'comentar_html': comentar_html,})
+                'receta_id': id,
+            })
         else:
             return HttpResponse("Error en la solicitud a la API", status=500)
     except Exception as e:

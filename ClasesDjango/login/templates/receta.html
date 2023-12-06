@@ -16,16 +16,17 @@
     
     {% comment %} ELEGIR ENTRE EK DE ARRIBA Y EL DE ABAJO {% endcomment %}
 
-    <form action="/receta/comentario/{{ Receta.id }}/comentario" method="POST">
+    <form method="POST"> <!--Se puede obviar action cuando este envia a la misma url-->
         {% csrf_token %}
-    <div class="container row">
-        <div class="col">
-            <div class="mb-3">
-                <label for="exampleFormControlTextarea1" class="form-label">Ingrea un comentario</label>
-                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-              </div>
-            <input type="submit" value="Enviar">
-        </div>
+        <input type="hidden" name="Receta_ID" value="{{ receta_id }}">
+        <div class="container row">
+            <div class="col">
+                <div class="mb-3">
+                    <textarea class="form-control" name="Comentario" id="exampleFormControlTextarea1" rows="3"></textarea>
+                    <input type="hidden" name="Receta_ID" value="{{ receta_id }}">
+                </div>
+                <input type="submit" value="Enviar">
+            </div>
 
 
         <div class="col d-flex justify-content-end">
@@ -35,6 +36,7 @@
             {% post_to_reddit "Prueba esta recta:" object_or_url %}
         </div>
     </div>
+    </form>
 </body>
 </html>
 {%endblock%}

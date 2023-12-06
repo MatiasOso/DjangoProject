@@ -7,6 +7,10 @@ header .nav-link {
     text-align: center;
 }
 
+/* Add red hitbox to everything */
+/* * {
+    border: 1px solid red;
+} */
 
 /* Agregar Receta */
 .tabla-receta {
