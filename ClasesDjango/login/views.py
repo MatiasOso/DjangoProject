@@ -68,11 +68,32 @@ def inicio(request):
 
                 cards_html += card
             
-            return render(request, 'inicio.html', {'cards_html': cards_html})
+            return render(request, 'inicio.html', {
+                'cards_html': cards_html,
+                })
         else:
             return HttpResponse("Error en la solicitud a la API", status=500)
     except Exception as e:
         return HttpResponse(str(e), status=500)
+
+def obtener_categorias(request):
+    url_api = 'http://localhost:3000/categorias'
+
+    try:
+        response = requests.get(url_api)
+
+        if response.status_code == 200:
+            categorias = response.json().get('categorias', [])
+            return categorias
+        else:
+            print("Error en la solicitud a la API", status=500)
+    except Exception as e:
+        print(str(e))
+        return []
+
+def header(request):
+    categorias = obtener_categorias(request)
+    return render(request, 'header.html', {'categorias': categorias})
 
 
 def AddRecipe(request):
@@ -152,8 +173,9 @@ def comentar_receta(request):
             return HttpResponse(str(e), status=500)
     else:
         return render(request, 'receta/{id}', {
-            'form': Comentario() 
+            'form': CreateNewRecipe()  #HELP AQUI   
         })
+                      
         
         
 
@@ -241,8 +263,7 @@ def ver_receta(request, id):
             return HttpResponse("Error en la solicitud a la API", status=500)
     except Exception as e:
         return HttpResponse(str(e), status=500)
-
-
+    
 # LOGIN N REGISTER LOGIN N REGISTER LOGIN N REGISTER LOGIN N REGISTER
 # LOGIN N REGISTER LOGIN N REGISTER LOGIN N REGISTER LOGIN N REGISTER
 # LOGIN N REGISTER LOGIN N REGISTER LOGIN N REGISTER LOGIN N REGISTER
