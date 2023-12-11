@@ -4,7 +4,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.http import JsonResponse, HttpResponse
 from requests.exceptions import RequestException
-from .models import Receta,Usuario
+from .models import Receta,Usuario,Imagen
 from .forms import CreateNewRecipe
 # from .google_auth_API import upload_file, get_recipe_image_url
 
@@ -83,13 +83,14 @@ def obtener_categorias(request):
         response = requests.get(url_api)
 
         if response.status_code == 200:
-            categorias = response.json().get('categorias', [])
+            categorias = response.json()
             return categorias
         else:
             print("Error en la solicitud a la API", status=500)
     except Exception as e:
         print(str(e))
         return []
+    return render(request, 'categorias.html',{'categorias': categorias})
 
 def header(request):
     categorias = obtener_categorias(request)
@@ -104,6 +105,7 @@ def AddRecipe(request):
         ingredientes = request.POST['ingredientes']
         preparacion = request.POST['preparacion']
         calificacion = request.POST['calificacion']
+        img = request.POST['img']
         # autor_id = request.POST['autor']
 
         # Obtiene el objeto Usuario correspondiente al ID proporcionado en el formulario
@@ -115,6 +117,9 @@ def AddRecipe(request):
             'ingredientes': ingredientes,
             'preparacion': preparacion,
             'calificacion': calificacion,
+        }
+        img_data = {
+            'img' : img
         }
 
         # URL de tu endpoint para agregar recetas en la API en Node.js
@@ -135,7 +140,8 @@ def AddRecipe(request):
             return HttpResponse(str(e), status=500)
     else:
         return render(request, 'addReceta.html', {
-            'form': CreateNewRecipe()
+            'form': CreateNewRecipe(),
+            'formsimg' : Imagen
         })
     
 def about(request):
@@ -272,20 +278,29 @@ def ver_receta(request, id):
 
 
 def register(request): #Yo del futuro: Quizas no necesites usar UserCreationForm ya que puede que al hacer migraciones jodas los modelos y con ello las demas paginas asi que prueba con solo usar lo creado por ti (register con el forms hecho por ti)
+                       # Y que tal si no uso el forms? puede que eso me de el error al registrar usuarios :////
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
+        # form = UserCreationForm(request.POST)
+        # if form.is_valid():
             # Guarda los datos del formulario validado
-            nombre = form.cleaned_data['username']
-            password = form.cleaned_data['password1']
-            email = form.cleaned_data['email']
+            # nombre = form.cleaned_data['username']
+            # password = form.cleaned_data['password1']
+            # email = form.cleaned_data['email']
+
+            nombre = request.POST.get('user')
+            password1 = request.POST.get('password1')
+            password2 = request.POST.get('password2')
+            email = request.POST.get('email')
 
             # Crea el diccionario con los datos del usuario
-            usuario_data = {
-                'nombre': nombre,
-                'password': password,
-                'email': email,
-            }
+            if password1 == password2:
+                usuario_data = {
+                    'nombre': nombre,
+                    'password': password1,
+                    'email': email,
+                }
+            else:
+                return HttpResponse("Las contraseñas no coinciden")
             
             # URL de tu endpoint para agregar usuarios en la API en Node.js
             url_api = 'http://localhost:3000/usuarios/add'
@@ -296,7 +311,7 @@ def register(request): #Yo del futuro: Quizas no necesites usar UserCreationForm
                 
                 if response.status_code == 200:
                     # Redirige a la página de inicio si el usuario se registró correctamente
-                    return redirect('inicio')
+                    return redirect('inicio') # Funcionó pero me lo entrego NULL D:
                 else:
                     # Maneja el caso si hay un error al agregar el usuario
                     return HttpResponse("Error al agregar el usuario a la API", status=500)
@@ -313,11 +328,11 @@ def login(request):
     if request.method == 'POST':
         user = request.POST['username']
         password = request.POST['password']
-
-        login_user = {
-        "Nombre": user,
-        "Password": password,
-        }
+    
+        # login_user = {
+        # "Nombre": user,
+        # "Password": password,
+        # }
         url_auth = 'http://localhost:3000/usuarios'
         try:
             response = requests.get(url_auth)
@@ -325,7 +340,7 @@ def login(request):
             if response.status_code == 200:
                 data = response.json()
                 for users in data['listaclientes']:
-                    if {users['Nombre']} == user and {users['Password']}:
+                    if {users['Nombre']} == user and {users['Password']} == password:  # Arreglar esta linea 
                         return redirect('inicio')
                     else:
                         return HttpResponse("Error al encontrar al usuario", status=500)        

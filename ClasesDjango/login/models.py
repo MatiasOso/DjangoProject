@@ -23,6 +23,8 @@ class Receta(models.Model):
     
     def __str__(self):
         return self.Nombre
+class Imagen(models.Model):
+    img = models.CharField(max_length=255)
 
 # class Comentario(models.Modles):
 #         Autor = models.IntegerField()

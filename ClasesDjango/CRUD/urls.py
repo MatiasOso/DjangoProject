@@ -26,6 +26,7 @@ urlpatterns = [
     path('register', views.register, name="register"),
     path('login', views.login, name="login"),
     path('receta/<int:id>', views.ver_receta, name='ver_receta'),
+    path('categorias', views.obtener_categorias, name='categorias'),
 ]
 # path('home',views.home),
 # path('inicio',views.inicio, name = "inicio"),

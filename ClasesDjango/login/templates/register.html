@@ -11,8 +11,13 @@
     <h1> Formulario Login</h1>
     <form method="POST" action="/register">
         {% csrf_token%}
-        {{form.as_p}}
-        {% comment %} Email {% endcomment %}
+        <!-- {{form.as_p}} -->
+        <label for="user">Usuario</label>
+        <input type="text" name="user" id="user" required>
+        <label for="password1">Contraseña</label>
+        <input type="password" name="password1" id="password1" required>
+        <label for="password2">Repita Contraseña</label>
+        <input type="password" name="password2" id="password2" required>
         <label for="email">Email:</label>
         <input type="email" name="email" id="email" required>
         <button>
