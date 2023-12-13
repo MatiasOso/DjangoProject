@@ -87,14 +87,40 @@ def obtener_categorias(request):
             return categorias
         else:
             print("Error en la solicitud a la API", status=500)
+            return []
     except Exception as e:
         print(str(e))
-        return []
-    return render(request, 'categorias.html',{'categorias': categorias})
+        return []  
 
 def header(request):
     categorias = obtener_categorias(request)
-    return render(request, 'header.html', {'categorias': categorias})
+    print(categorias)
+    return render(request, 'header.html', {
+        'categorias': categorias,
+    })
+    
+    
+def buscar_por_categoria(request):
+    categoria = request.GET.get('Categoria')  # Mantener 'Categoria' con mayúscula
+
+    if not categoria:
+        return render(request, 'plantilla_sin_categoria.html')
+
+    url_api = f'http://localhost:3000/buscar/?Categoria={categoria}'  # Actualizar la URL a 'Categoria'
+
+    try:
+        response = requests.get(url_api)
+
+        if response.status_code == 200:
+            recetas = response.json()
+            return render(request, 'Categoria.html', {'recetas': recetas, 'categoria': categoria})
+        else:
+            return render(request, 'error_solicitud_api.html')
+    except requests.RequestException as e:
+        return render(request, 'error_excepcion.html')
+
+    
+    
 
 
 def AddRecipe(request):
@@ -228,12 +254,18 @@ def ver_receta(request, id):
 
             cards_html = ""
             for rec in receta:  # Cambia el nombre de la variable para no reemplazar la lista `receta`
+                ingredientes = rec['Ingredientes'].split(", ")
+                ingredientes_html = "<ul>"
+                for ingrediente in ingredientes:
+                    ingredientes_html += f"<li>{ingrediente}</li>"
+                ingredientes_html += "</ul>"
                 card = f"""
                 <div class="col">
                     <div class="card shadow-sm">
                         <div class="card-body">
                             <h5 class="card-title">{rec['Nombre']}</h5>
-                            <p class="card-text">Ingredientes: {rec['Ingredientes']}</p>
+                            <p class="card-text">Ingredientes:</p>
+                            {ingredientes_html}
                             <p class="card-text">Preparacion: {rec['Preparacion']}</p>
                             <p class="card-text">Calificación: {rec['Calificacion']}</p>
                             <div class="d-flex justify-content-between align-items-center">
@@ -280,13 +312,6 @@ def ver_receta(request, id):
 def register(request): #Yo del futuro: Quizas no necesites usar UserCreationForm ya que puede que al hacer migraciones jodas los modelos y con ello las demas paginas asi que prueba con solo usar lo creado por ti (register con el forms hecho por ti)
                        # Y que tal si no uso el forms? puede que eso me de el error al registrar usuarios :////
     if request.method == 'POST':
-        # form = UserCreationForm(request.POST)
-        # if form.is_valid():
-            # Guarda los datos del formulario validado
-            # nombre = form.cleaned_data['username']
-            # password = form.cleaned_data['password1']
-            # email = form.cleaned_data['email']
-
             nombre = request.POST.get('user')
             password1 = request.POST.get('password1')
             password2 = request.POST.get('password2')
@@ -329,25 +354,22 @@ def login(request):
         user = request.POST['username']
         password = request.POST['password']
     
-        # login_user = {
-        # "Nombre": user,
-        # "Password": password,
-        # }
         url_auth = 'http://localhost:3000/usuarios'
         try:
             response = requests.get(url_auth)
 
             if response.status_code == 200:
                 data = response.json()
-                for users in data['listaclientes']:
-                    if {users['Nombre']} == user and {users['Password']} == password:  # Arreglar esta linea 
+                # Iterar a través de cada usuario para verificar credenciales
+                for user_data in data.get('listaclientes', []):
+                    if user_data['Nombre'] == user and user_data['Password'] == password:
                         return redirect('inicio')
-                    else:
-                        return HttpResponse("Error al encontrar al usuario", status=500)        
+                # Si el bucle termina sin retornar, significa que las credenciales no coinciden
+                return HttpResponse("Error al encontrar al usuario", status=500)
             else:
                 return HttpResponse("Error al encontrar al usuario", status=500)
         except Exception as e:
             return HttpResponse(str(e), status=500)
     else:
-        return render(request,'login.html',{
-    })  
+        return render(request, 'login.html', {})
+

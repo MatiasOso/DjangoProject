@@ -7,15 +7,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-<body>
+<body class="inicio">
     <h1> Formulario Receta</h1>
     <!-- Para la receta se necesitará: Categoria,Nombre,Ingredientes,Preparacion, Calificacion, Autor -->
     <form class="tabla-receta" method="POST">
         {% csrf_token %}
     {{form.as_p}}
     {% comment %} img {% endcomment %}
-    <input type="file" name="img" id="img">
-        <button>Save</button>
+    {% comment %} <input type="file" name="img" id="img"> {% endcomment %}
+    <button type="submit" class="btn btn-primary">Subir receta :D</button>
     </form>
 </body>
 </html>

@@ -2,16 +2,20 @@
 header {
     background-color: #7A7256;
 }
+
 header .nav-link {
     color: white; /* Cambia el color a blanco */
     text-align: center;
 }
+/* Register.hmtl */
 
 /* Add red hitbox to everything */
 /* * {
     border: 1px solid red;
 } */
-
+.register {
+    background-color: #f2f2f2;
+}
 /* Agregar Receta */
 .tabla-receta {
     width: 100%;
@@ -52,7 +56,7 @@ header .nav-link {
 }
 
 .card-color{
-    background-color: #000;
+    background-color: #7A7256;
 }
 
 /* Login */
@@ -103,7 +107,6 @@ header .nav-link {
 }
 
 .contenedor-parrafo {
-    background-color: rgb(235, 234, 230);
     width:700px; 
     height: 400px; 
     margin-left: auto;
@@ -130,4 +133,8 @@ header .nav-link {
 
 .image-container img:hover {
     transform: scale(1.05); 
+}
+
+.card-login{
+    background-color: black;
 }

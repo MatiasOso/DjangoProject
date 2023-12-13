@@ -20,16 +20,13 @@
                     <ul class="nav nav-pills d-flex justify-content-between align-items-center h-100">
                         <li class="nav-item"><a href="{% url 'inicio'%}" class="nav-link text-light">Inicio</a></li>
                         <li class="nav-item"><a href="{% url 'about'%}" class="nav-link text-light">Nosotros</a></li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Nuestra Cocina
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                {% for categoria in categorias %}
-                                    <li><a class="dropdown-item" href="/buscar/{{ categoria }}">{{ categoria }}ola</a></li>
-                                {% endfor %}
-                            </ul>
-                        </li>
+                        <li class="nav-item">
+                            <div class="col">
+                                <form class="d-flex" action="/buscar" method="GET">
+                                    <input class="form-control me-2" type="search" placeholder="Buscar por categoría" aria-label="Buscar" name="categoria">
+                                    <button class="btn btn-outline-light" type="submit">Buscar</button>
+                                </form>
+                            </div>                            
                         <li class="nav-item"><a href="{% url 'AddRecipe'%}" class="nav-link text-light">Sube tu receta ;)</a></li>
                         <li class="nav-item"><a href="{% url 'login'%}" class="nav-link text-light">Login</a></li>
                         <li class="nav-item"><a href="{% url 'register'%}" class="nav-link text-light">Sign Up</a></li>

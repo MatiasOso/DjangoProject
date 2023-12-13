@@ -27,6 +27,6 @@ urlpatterns = [
     path('login', views.login, name="login"),
     path('receta/<int:id>', views.ver_receta, name='ver_receta'),
     path('categorias', views.obtener_categorias, name='categorias'),
+    path('buscar/', views.buscar_por_categoria, name='buscar_por_categoria'),
+    
 ]
-# path('home',views.home),
-# path('inicio',views.inicio, name = "inicio"),
