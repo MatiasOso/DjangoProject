@@ -1,18 +1,21 @@
 {% extends 'layouts/header.html' %} 
 {%block content%}
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Recetas por Categoría</title>
+    
 </head>
-<body>
-    <h1> Categorias </h1>
-    
-    
+<body class="inicio">
+    <h1>Recetas por Categoría</h1>
+    <div class="container">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+    {{ cards_html | safe }}
+    </div>
+    </div>
 
 </body>
 </html>
+
 {%endblock%}
 ```

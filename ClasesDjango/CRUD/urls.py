@@ -28,5 +28,6 @@ urlpatterns = [
     path('receta/<int:id>', views.ver_receta, name='ver_receta'),
     path('categorias', views.obtener_categorias, name='categorias'),
     path('buscar/', views.buscar_por_categoria, name='buscar_por_categoria'),
+    # path('Categoria/<str:categoria>', views.recetas_por_categoria, name='recetas_por_categoria'),
     
 ]

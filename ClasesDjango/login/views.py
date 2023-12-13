@@ -99,25 +99,49 @@ def header(request):
         'categorias': categorias,
     })
     
-    
 def buscar_por_categoria(request):
     categoria = request.GET.get('Categoria')  # Mantener 'Categoria' con mayúscula
 
     if not categoria:
         return render(request, 'plantilla_sin_categoria.html')
 
-    url_api = f'http://localhost:3000/buscar/?Categoria={categoria}'  # Actualizar la URL a 'Categoria'
-
+    url_api = f'http://localhost:3000/buscar/?Categoria={categoria}'
     try:
         response = requests.get(url_api)
-
+                                                                    # Quizas necesite esto despues ------>  <img src="{receta['IMG']}" class="card-img-top" alt="Imagen de la receta">
         if response.status_code == 200:
             recetas = response.json()
-            return render(request, 'Categoria.html', {'recetas': recetas, 'categoria': categoria})
+            cards_html = ""
+            for receta in recetas:
+                cards_html += f"""
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                        <h5 class="card-title text-center">{receta['Nombre']}</h5>
+                        <p class="card-text">Calificación: {receta['Calificacion']}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                            <a href="/receta/{receta['ID']}" class="btn btn-sm btn-outline-secondary">Ver</a>
+                            <button type="button" class="btn btn-sm btn-outline-secondary">Compartir</button>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                """
+            return render(request, 'Categorias.html', {
+                'recetas': recetas,
+                'categoria': categoria,
+                'cards_html': cards_html,})
         else:
             return render(request, 'error_solicitud_api.html')
     except requests.RequestException as e:
         return render(request, 'error_excepcion.html')
+    
+    
+    
+    
+    
 
     
     
@@ -207,6 +231,8 @@ def comentar_receta(request):
         return render(request, 'receta/{id}', {
             'form': CreateNewRecipe()  #HELP AQUI   
         })
+        
+
                       
         
         
